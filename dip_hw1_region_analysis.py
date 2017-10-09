@@ -1,4 +1,4 @@
-"""dip_hw1.py: Starter file to run homework 1"""
+"""dip_hw1.py: Starter file to run howework 1"""
 
 #Example Usage: ./dip_hw1_region_analysis -i imagename.jpg
 
@@ -11,6 +11,7 @@ import cv2
 import sys
 from datetime import datetime
 import matplotlib
+from random import uniform
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
@@ -53,14 +54,15 @@ def main():
 
     outputDir = 'output/cellct/'
 
-    #Saving histogram to output directory    
+    #Saving histogram to output directory
     hist_fig = plt.plot(hist)
     plt.savefig(outputDir+"hist.png")
 
-    threshold = bin_img.find_optimal_threshold(hist)
+    #threshold = bin_img.find_optimal_threshold(hist)
+    threshold = bin_img.find_optimal_threshold(bin_img.rand_val)
     print("Optimal threshold: ", threshold)
 
-    binary_img = bin_img.binarize(input_image)
+    binary_img = bin_img.binarize(input_image,threshold)
     output_image_name = outputDir + "binary_image_" + datetime.now().strftime("%m%d-%H%M%S") + ".jpg"
     cv2.imwrite(output_image_name, binary_img)
 
@@ -80,7 +82,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
 
 
