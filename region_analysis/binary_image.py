@@ -1,5 +1,8 @@
+import cv2
 import numpy as np
-
+import sys
+from random import uniform
+import matplotlib.pyplot as plt
 class binary_image:
 
     def compute_histogram(self, image):
@@ -7,8 +10,11 @@ class binary_image:
         takes as input:
         image: a grey scale image
         returns a histogram"""
-
+        [dim1,dim2] = image.shape
         hist = [0]*256
+        for i in range(dim1):
+            for j in range(dim2):
+                hist[image[i,j]] += 1
 
 
         return hist
@@ -19,10 +25,6 @@ class binary_image:
         hist: a bimodal histogram
         returns: an optimal threshold value"""
 
-        threshold = 0
-
-
-        return threshold
 
     def binarize(self, image):
         """Comptues the binary image of the the input image based on histogram analysis and thresholding

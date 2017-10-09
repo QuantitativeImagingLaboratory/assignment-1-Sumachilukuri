@@ -1,6 +1,10 @@
 import cv2
 import sys
 import numpy as np
+import matplotlib.pyplot as plt
+from resize import interpolation as ip1
+import math
+
 class resample:
 
     def resize(self, image, fx = None, fy = None, interpolation = None):
@@ -60,6 +64,43 @@ class resample:
 
         # Write your code for bilinear interpolation here
 
+        (Input_row, Input_col) = image.shape
+        OutputrowF = (float(Input_row) * float(fx))
+        OutputcolF = (float(Input_col) * float(fy))
+        #print(image.shape)
+        Outputrow = int(OutputrowF)
+        Outputcol = int(OutputcolF)
+        #print(Outputrow)
+        #print(Outputcol)
+        OutputImage = np.zeros((Outputrow, Outputcol), np.uint8)
 
-        return image
+        interpol = ip1.interpolation()
+
+        
+        for i in range(0, Outputrow - 1):
+            x1 = math.floor(i / float(fx))
+            x2 = math.ceil(i / float(fx))
+            if x2 == 512:
+                x2 = 511
+            for j in range(0, Outputcol - 1):
+                y1 = math.floor(j / float(fy))
+
+                y2 = math.ceil(j / float(fy))
+                if y2 == 512:
+                    y2 = 511
+
+                pt1 = (x1, y1, image[x1, y1])
+                pt2 = (x2, y1, image[x2, y1])
+                pt3 = (x1, y2, image[x1, y2])
+                pt4 = (x2, y2, image[x2, y2])
+
+                if isinstance(i / float(fx), float) and isinstance(j / float(fx), float):
+                    value = (i / float(fx), j / float(fy))
+                    #print(value)
+
+                    OutputImage[i, j] = interpol.bilinear_interpolation(pt1, pt2, pt3, pt4, value)
+                   # print(OutputImage[i, j])
+
+        return OutputImage
+
 
